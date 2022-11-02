@@ -13,7 +13,7 @@ export class Usuario extends Entity {
     type: 'string',
     required: true,
   })
-  nombre: string;
+  nombreUsuario: string;
 
   @property({
     type: 'string',
@@ -45,6 +45,15 @@ export class Usuario extends Entity {
   })
   email: string;
 
+  @property({
+    type: 'string',
+  })
+  clienteId?: string;
+
+  @property({
+    type: 'string',
+  })
+  vendedorId?: string;
 
   constructor(data?: Partial<Usuario>) {
     super(data);

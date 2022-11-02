@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Pedido} from './pedido.model';
 
 @model()
 export class Factura extends Entity {
@@ -10,29 +11,24 @@ export class Factura extends Entity {
   idFactura?: string;
 
   @property({
-    type: 'string',
-    required: true,
-  })
-  idVendedor: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  idPedido: string;
-
-  @property({
     type: 'boolean',
     required: true,
   })
-  estadoFactura: boolean;
+  EstadoFactura: boolean;
 
   @property({
     type: 'date',
     required: true,
   })
-  fechaRegistro: string;
+  FechaRegistro: string;
 
+  @property({
+    type: 'string',
+  })
+  vendedorId?: string;
+
+  @hasMany(() => Pedido)
+  pedidos: Pedido[];
 
   constructor(data?: Partial<Factura>) {
     super(data);
