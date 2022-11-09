@@ -26,26 +26,26 @@ export class FacturaPedidoController {
     @repository(FacturaRepository) protected facturaRepository: FacturaRepository,
   ) { }
 
-  @get('/facturas/{id}/pedidos', {
+  @get('/facturas/{id}/pedido', {
     responses: {
       '200': {
-        description: 'Array of Factura has many Pedido',
+        description: 'Factura has one Pedido',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Pedido)},
+            schema: getModelSchemaRef(Pedido),
           },
         },
       },
     },
   })
-  async find(
+  async get(
     @param.path.string('id') id: string,
     @param.query.object('filter') filter?: Filter<Pedido>,
-  ): Promise<Pedido[]> {
-    return this.facturaRepository.pedidos(id).find(filter);
+  ): Promise<Pedido> {
+    return this.facturaRepository.suPedido(id).get(filter);
   }
 
-  @post('/facturas/{id}/pedidos', {
+  @post('/facturas/{id}/pedido', {
     responses: {
       '200': {
         description: 'Factura model instance',
@@ -67,10 +67,10 @@ export class FacturaPedidoController {
       },
     }) pedido: Omit<Pedido, 'idPedido'>,
   ): Promise<Pedido> {
-    return this.facturaRepository.pedidos(id).create(pedido);
+    return this.facturaRepository.suPedido(id).create(pedido);
   }
 
-  @patch('/facturas/{id}/pedidos', {
+  @patch('/facturas/{id}/pedido', {
     responses: {
       '200': {
         description: 'Factura.Pedido PATCH success count',
@@ -90,10 +90,10 @@ export class FacturaPedidoController {
     pedido: Partial<Pedido>,
     @param.query.object('where', getWhereSchemaFor(Pedido)) where?: Where<Pedido>,
   ): Promise<Count> {
-    return this.facturaRepository.pedidos(id).patch(pedido, where);
+    return this.facturaRepository.suPedido(id).patch(pedido, where);
   }
 
-  @del('/facturas/{id}/pedidos', {
+  @del('/facturas/{id}/pedido', {
     responses: {
       '200': {
         description: 'Factura.Pedido DELETE success count',
@@ -105,6 +105,6 @@ export class FacturaPedidoController {
     @param.path.string('id') id: string,
     @param.query.object('where', getWhereSchemaFor(Pedido)) where?: Where<Pedido>,
   ): Promise<Count> {
-    return this.facturaRepository.pedidos(id).delete(where);
+    return this.facturaRepository.suPedido(id).delete(where);
   }
 }
