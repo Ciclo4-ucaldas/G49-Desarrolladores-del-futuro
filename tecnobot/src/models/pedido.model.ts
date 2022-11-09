@@ -1,4 +1,8 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
+import {Cliente} from './cliente.model';
+import {Factura} from './factura.model';
+import {Producto} from './producto.model';
+import {PedidosxProductos} from './pedidosx-productos.model';
 
 @model()
 export class Pedido extends Entity {
@@ -21,20 +25,14 @@ export class Pedido extends Entity {
   })
   total: number;
 
-  @property({
-    type: 'string',
-  })
-  productoId?: string;
+  @belongsTo(() => Cliente, {name: 'suCliente'})
+  clienteId: string;
 
-  @property({
-    type: 'string',
-  })
-  clienteId?: string;
+  @belongsTo(() => Factura, {name: 'suFactura'})
+  facturaId: string;
 
-  @property({
-    type: 'string',
-  })
-  facturaId?: string;
+  @hasMany(() => Producto, {through: {model: () => PedidosxProductos}})
+  productos: Producto[];
 
   constructor(data?: Partial<Pedido>) {
     super(data);

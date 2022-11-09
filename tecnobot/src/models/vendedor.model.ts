@@ -3,7 +3,7 @@ import {Usuario} from './usuario.model';
 import {Factura} from './factura.model';
 
 @model()
-export class Vendedor extends Entity {
+export class Vendedor extends Usuario {
   @property({
     type: 'string',
     id: true,
@@ -16,9 +16,6 @@ export class Vendedor extends Entity {
     required: true,
   })
   cargo: string;
-
-  @hasMany(() => Usuario)
-  usuarios: Usuario[];
 
   @hasMany(() => Factura)
   facturas: Factura[];

@@ -28,9 +28,6 @@ export class Producto extends Entity {
   })
   cantidad: number;
 
-  @hasMany(() => Pedido)
-  pedidos: Pedido[];
-
   constructor(data?: Partial<Producto>) {
     super(data);
   }

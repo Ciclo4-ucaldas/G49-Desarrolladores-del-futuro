@@ -3,7 +3,7 @@ import {Usuario} from './usuario.model';
 import {Pedido} from './pedido.model';
 
 @model()
-export class Cliente extends Entity {
+export class Cliente extends Usuario {
   @property({
     type: 'string',
     id: true,
@@ -16,9 +16,6 @@ export class Cliente extends Entity {
     required: true,
   })
   Fidelidad: string;
-
-  @hasMany(() => Usuario)
-  usuarios: Usuario[];
 
   @hasMany(() => Pedido)
   pedidos: Pedido[];
