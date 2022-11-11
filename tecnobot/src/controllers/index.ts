@@ -11,3 +11,4 @@ export * from './producto.controller';
 export * from './pedido-cliente.controller';
 export * from './pedido-factura.controller';
 export * from './pedido-producto.controller';
+export * from './cliente.controller';
