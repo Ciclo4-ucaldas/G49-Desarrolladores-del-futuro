@@ -1,6 +1,6 @@
 import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 @injectable({scope: BindingScope.TRANSIENT})
-export class AutorizacionService {
+export class AuthenticationService {
   constructor(/* Add @inject to inject parameters */) {}
 
 
