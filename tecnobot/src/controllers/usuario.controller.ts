@@ -17,18 +17,20 @@ import {
   del,
   requestBody,
   response,
+  HttpErrors,
 } from '@loopback/rest';
 import {Usuario} from '../models';
 import {UsuarioRepository} from '../repositories';
-import {AutenticacionService} from '../services';
-const fetch = require("node-fetch");
+import {AuthenticationService, NotificacionService} from '../services';
 
 export class UsuarioController {
   constructor(
     @repository(UsuarioRepository)
     public usuarioRepository : UsuarioRepository,
-    @service(AutenticacionService)
-    public servicioAutenticacion: AutenticacionService
+    @service(AuthenticationService)
+    public servicioAutenticacion: AuthenticationService,
+    @service(NotificacionService)
+    public servicioNotificacion:NotificacionService
   ) {}
 
   @post('/usuarios')
@@ -48,9 +50,9 @@ export class UsuarioController {
       },
     })
     usuario: Omit<Usuario, 'idUsuario'>,
-  ): Promise<Usuario> {
-    let clave = this.servicioAutenticacion.GenerarClave();
-    let claveCifrada = this.servicioAutenticacion.CifrarClave(clave);
+  ): Promise<Usuario|any> {
+    let clave = this.servicioNotificacion.GenerarClave();
+    let claveCifrada = this.servicioNotificacion.CifrarClave(clave);
     usuario.password = claveCifrada;
     let p = await this.usuarioRepository.create(usuario);
 
@@ -58,11 +60,12 @@ export class UsuarioController {
     let destino = usuario.email;
     let asunto = 'Registro exitoso en la plataforma';
     let contenido = `Hola ${usuario.nombreUsuario}, su nombre de usuario es: ${usuario.email} y su contraseña es: ${usuario.password}`;
-    fetch(`http://127.0.0.1:5000/envio-correo?correo_destino=${destino}&asunto=${asunto}&mensaje=${contenido}`)
-      .then((data: any) => {
-        console.log(data);
-      })
-    return p;
+    let notificadoEmail= this.servicioNotificacion.notificacionEmail(destino,asunto,contenido)
+    if(notificadoEmail){
+      return p;
+    } else{
+      new HttpErrors[500]("error no se pudo notificar el usuario")
+    } 
   }
 
   @get('/usuarios/count')
