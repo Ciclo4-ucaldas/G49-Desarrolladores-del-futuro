@@ -11,8 +11,6 @@ export class ClienteRepository extends DefaultCrudRepository<
   ClienteRelations
 > {
 
-  public readonly usuarios: HasManyRepositoryFactory<Usuario, typeof Cliente.prototype.idCliente>;
-
   public readonly pedidos: HasManyRepositoryFactory<Pedido, typeof Cliente.prototype.idCliente>;
 
   constructor(
@@ -21,7 +19,5 @@ export class ClienteRepository extends DefaultCrudRepository<
     super(Cliente, dataSource);
     this.pedidos = this.createHasManyRepositoryFactoryFor('pedidos', pedidoRepositoryGetter,);
     this.registerInclusionResolver('pedidos', this.pedidos.inclusionResolver);
-    this.usuarios = this.createHasManyRepositoryFactoryFor('usuarios', usuarioRepositoryGetter,);
-    this.registerInclusionResolver('usuarios', this.usuarios.inclusionResolver);
   }
 }
