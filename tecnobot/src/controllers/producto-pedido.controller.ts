@@ -61,7 +61,6 @@ export class ProductoPedidoController {
           schema: getModelSchemaRef(Pedido, {
             title: 'NewPedidoInProducto',
             exclude: ['idPedido'],
-            optional: ['productoId']
           }),
         },
       },
